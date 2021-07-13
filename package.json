@@ -4,6 +4,7 @@
   "description": "Tic tac toe Kata for XP-Farm",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "jest",
     "test:watch": "jest --coverage --watchAll=true"
   },
