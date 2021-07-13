@@ -1,3 +1,3 @@
 const game = require('./src/module/game');
 
-game.start();
+console.log(game.start());

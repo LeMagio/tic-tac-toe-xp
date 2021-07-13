@@ -6,7 +6,7 @@ const CONSTANT_VALUES = {
     VERTICAL_DIVISION: '|',
     INTERSECTION: '+',
     BEGIN_HEADER_MESSAGE: 'Game Board Creation...',
-    BEGIN_FOOTER_MESSAGE: 'Board Created./nThe game will start with player',
+    BEGIN_FOOTER_MESSAGE: 'Board Created.\nThe game will start with player',
     TURN_PLAYER_HEADER_MESSAGE: 'Player',
     TURN_PLAYER_FOOTER_MESSAGE: '',
     TURNS_INTERVAL: 2000,
@@ -24,7 +24,7 @@ let currentTurn;
  * @param {Number} placeColumn Number in column (1-3)
  * @returns String representing the board
  */
- const drawBoard = (playerInTurn, placeRow = 0, placeColumn = 0) => {
+const drawBoard = (playerInTurn, placeRow = 0, placeColumn = 0) => {
     let boardLayout = Array(CONSTANT_VALUES.BOARD_SIZE).fill(CONSTANT_VALUES.HORIZONTAL_DIVISION)
         .map((dash, row) => {
             let insideValue = (row + 1) % 2 != 0 ? CONSTANT_VALUES.EMPTY_CELL : dash;
@@ -45,7 +45,7 @@ let currentTurn;
 
     const outputBoard = boardLayout.map((v, row) => {
         return Object.values(v).join([1, 3].includes(row) ? CONSTANT_VALUES.INTERSECTION : CONSTANT_VALUES.VERTICAL_DIVISION)
-    }).join('/n');
+    }).join('\n');
 
     return outputBoard;
 }
@@ -85,15 +85,15 @@ const footerMessage = (turn, player) => {
  * player selected starts with X
  * @param {String} player Starting player
  */
-const start = (player = 'X') => {
+const playTurn = (player = 'X', row = 0, column = 0) => {
     currentTurn = 0;
 
     let headerMessageOutput = headerMessage(currentTurn, player);
-    let boardOutput = drawBoard(player);
+    let boardOutput = drawBoard(player, row, column);
     let footerMessageOutput = footerMessage(currentTurn++, player);
 
-    const output = `${headerMessageOutput}/n${boardOutput}/n${footerMessageOutput}`;
+    const output = `${headerMessageOutput}\n${boardOutput}\n${footerMessageOutput}`;
     return output;
 };
 
-module.exports = { start, drawBoard, headerMessage, footerMessage };
+module.exports = { start: playTurn, drawBoard, headerMessage, footerMessage };
