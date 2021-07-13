@@ -6,11 +6,11 @@ describe("Scenario 1: Game board creation", () => {
             .toBe(" | | \n-+-+-\n | | \n-+-+-\n | | ");
     });
     it('Player X on first cell of first row', () => {
-        expect(game.drawBoard('X', 1, 1))
+        expect(game.drawBoard('X', [[1, 1]]))
             .toBe("X| | \n-+-+-\n | | \n-+-+-\n | | ");
     });
     it('Player O on third cell of third row', () => {
-        expect(game.drawBoard('O', 3, 3))
+        expect(game.drawBoard('O', [[3, 3]]))
             .toBe(" | | \n-+-+-\n | | \n-+-+-\n | |O");
     });
     it('Header test for beginning', () => {
@@ -30,14 +30,14 @@ describe("Scenario 1: Game board creation", () => {
             .toBe("Board Created.\nThe game will start with player X");
     });
     it('Game board layout', () => {
-        expect(game.start('X', false))
+        expect(game.playTurn('X'))
             .toBe("Game Board Creation...\n | | \n-+-+-\n | | \n-+-+-\n | | \nBoard Created.\nThe game will start with player X");
     });
 });
 
 describe("Scenario 2: Game board creation", () => {
     it('Player X won with a vertical line ', () => {
-        expect(game.start('X',))
+        expect(game.playTurn('X',))
             .toBe("Player X:\nX| | \n-+-+-X|O| \n-+-+-X| |O\nPLAYER X WON!");
     });
 });

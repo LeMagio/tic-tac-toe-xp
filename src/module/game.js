@@ -19,12 +19,13 @@ let currentTurn;
 
 /**
  * Draws the board with the current distribution until last turn
+ * using the turns provided switching between each player on every
+ * player placing turn
  * @param {String} playerInTurn The player
- * @param {Number} placeRow Number in rows (1-3)
- * @param {Number} placeColumn Number in column (1-3)
+ * @param {Array} turnList Array with the turns in ASC way
  * @returns String representing the board
  */
-const drawBoard = (playerInTurn, placeRow = 0, placeColumn = 0) => {
+const drawBoard = (playerInTurn, turnList = [[0, 0]]) => {
     let boardLayout = Array(CONSTANT_VALUES.BOARD_SIZE).fill(CONSTANT_VALUES.HORIZONTAL_DIVISION)
         .map((dash, row) => {
             let insideValue = (row + 1) % 2 != 0 ? CONSTANT_VALUES.EMPTY_CELL : dash;
@@ -39,9 +40,10 @@ const drawBoard = (playerInTurn, placeRow = 0, placeColumn = 0) => {
             return rowList;
         });
 
-    // unless is a positon between 1 and 3 don't place the player move
-    if (placeRow != 0 && placeColumn != 0)
-        boardLayout[CONSTANT_VALUES.ROW_EQ[placeRow]][`cell_${placeColumn}`] = playerInTurn;
+    turnList.forEach(({ 0: placeRow, 1: placeColumn }) => {
+        if (placeRow != 0 && placeColumn != 0)
+            boardLayout[CONSTANT_VALUES.ROW_EQ[placeRow]][`cell_${placeColumn}`] = playerInTurn;
+    });
 
     const outputBoard = boardLayout.map((v, row) => {
         return Object.values(v).join([1, 3].includes(row) ? CONSTANT_VALUES.INTERSECTION : CONSTANT_VALUES.VERTICAL_DIVISION)
@@ -85,15 +87,19 @@ const footerMessage = (turn, player) => {
  * player selected starts with X
  * @param {String} player Starting player
  */
-const playTurn = (player = 'X', row = 0, column = 0) => {
+const playTurn = (player = 'X', turnList = [[0, 0]]) => {
     currentTurn = 0;
 
     let headerMessageOutput = headerMessage(currentTurn, player);
-    let boardOutput = drawBoard(player, row, column);
+    let boardOutput = drawBoard(player, turnList);
     let footerMessageOutput = footerMessage(currentTurn++, player);
 
     const output = `${headerMessageOutput}\n${boardOutput}\n${footerMessageOutput}`;
     return output;
 };
 
-module.exports = { start: playTurn, drawBoard, headerMessage, footerMessage };
+const begin = (player, turnList) => {
+    //TODO implement 
+}
+
+module.exports = { begin, playTurn, drawBoard, headerMessage, footerMessage };
