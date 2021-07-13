@@ -14,7 +14,7 @@ The main approach to build and test the scenarios is to use the _outside-in_ tec
 
 | Test Scenario | Status |
 | ------ | ------ |
-| Game Board Creation phase | ❌ |
+| Game Board Creation phase | ✅ |
 | Player X won with a vertical line | ❌ |
 | Player O won with a horizontal line | ❌ |
 | Player X won with a diagonal line | ❌ |

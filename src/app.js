@@ -1,1 +1,3 @@
-//TODO  add implementation for application initialization
+const game = require('./module/game');
+
+game.start();
