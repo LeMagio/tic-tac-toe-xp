@@ -1,6 +1,7 @@
 const CONSTANT_VALUES = {
     PLAYER_X: 'X',
     PLAYER_O: 'O',
+    ALLOWED_PLAYER: { 'X': 'X', 'O': 'O' },
     BOARD_SIZE: 5,
     COLUMNS: 3,
     EMPTY_CELL: ' ',
@@ -48,7 +49,7 @@ const drawBoard = (startingPlayer, turnList = [[0, 0]]) => {
             return rowList;
         });
 
-    let playerInTurn = startingPlayer === CONSTANT_VALUES.PLAYER_X ? CONSTANT_VALUES.PLAYER_X : CONSTANT_VALUES.PLAYER_O;
+    let playerInTurn = CONSTANT_VALUES.ALLOWED_PLAYER[startingPlayer] || CONSTANT_VALUES.PLAYER_X;
 
     turnList.forEach(({ 0: placeRow, 1: placeColumn }) => {
         if (placeRow != 0 && placeColumn != 0)
@@ -74,8 +75,8 @@ const headerMessage = (turn, player) => {
     if (turn == 0)
         return CONSTANT_VALUES.BEGIN_HEADER_MESSAGE;
 
-    let output = `${CONSTANT_VALUES.TURN_PLAYER_HEADER_MESSAGE} ${player} (turn ${turn}):`;
-    return output;
+    let outputMessage = `${CONSTANT_VALUES.TURN_PLAYER_HEADER_MESSAGE} ${player} (turn ${turn}):`;
+    return outputMessage;
 }
 
 /**
@@ -83,16 +84,18 @@ const headerMessage = (turn, player) => {
  * provided turn and player
  * @param {Number} turn Number of the turn, 
  * @param {String} player The current player for the turn
+ * @param {JSON} analyzedResult JSON object containing the
+ * match outcome
  * @returns The formatted string
  */
-const footerMessage = (turn, player, analyzedResult = { X: false }) => {
+const footerMessage = (turn, player, analyzedResult = { 'X': false }) => {
     if (turn == 0)
         return `${CONSTANT_VALUES.BEGIN_FOOTER_MESSAGE} ${player}`;
 
-    let output = analyzedResult[player]
+    let outputMessage = analyzedResult[player]
         ? `${CONSTANT_VALUES.WIN_PLAYER_FOOTER_MESSAGE} ${player} WON!`
         : '';
-    return output;
+    return outputMessage;
 }
 
 /**
@@ -119,7 +122,7 @@ const playTurn = (player = 'X', turnList, currentTurn = turnList.length) => {
  * for winning combinations
  * @param {String} player The player
  * @param {Array} turnList List of turns
- * @returns 
+ * @returns JSON object with the winning status for each player { 'X':<boolean>, 'O':<boolean> }
  */
 const analyzePlayerPlacement = (player, turnList = Array()) => {
     const firstPlayerList = [].concat(...turnList.filter(CONSTANT_VALUES.EVEN_FUNCTION));
@@ -131,9 +134,9 @@ const analyzePlayerPlacement = (player, turnList = Array()) => {
         ? secondPlayerList.reduce(CONSTANT_VALUES.REDUCE_FUNCTION) : 0;
 
     return {
-        [player]: CONSTANT_VALUES.WINNING_SUMS.includes(sumFirstPlayer) && firstPlayerList.length > 2,
+        [player]: (CONSTANT_VALUES.WINNING_SUMS.includes(sumFirstPlayer) && firstPlayerList.length > 2),
         [CONSTANT_VALUES.SWITCH_PLAYER[player]]:
-            CONSTANT_VALUES.WINNING_SUMS.includes(sumSecondPlayer) && secondPlayerList.length > 2
+            (CONSTANT_VALUES.WINNING_SUMS.includes(sumSecondPlayer) && secondPlayerList.length > 2)
     };
 };
 
