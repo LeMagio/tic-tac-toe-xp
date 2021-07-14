@@ -1,5 +1,6 @@
+require('dotenv').config();
 const game = require('./src/module/game');
-const turnList = process.env.TURN_LIST;
+const turnList = eval(process.env.TURN_LIST);
 const startingPlayer = process.env.STARTING_PLAYER;
 
-console.log(game.begin(startingPlayer, turnList));
+console.log(game.playTurn(startingPlayer, turnList));
